@@ -163,7 +163,7 @@ If x = 0 then GCD(x,y)=y.
 If y = 0 then GCD(x,y)=x.
 Write x in quotient remainder form (x = A⋅y + R). Find GCD(y,R) (since GCD(x,y)=GCD(y,R)).
 ```
-
+ 
 Test cases:
 
 ```haskell
