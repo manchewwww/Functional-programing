@@ -103,7 +103,7 @@ print $ fibIter 110 == 43566776258854844738105
 
 Define two predicates that return whether a number is even:
 
-- using if-else;
+- using if-else; 
 - using guards. <- The preferred way!
 
 Test cases:
