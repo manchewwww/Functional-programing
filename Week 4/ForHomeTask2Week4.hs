@@ -17,7 +17,7 @@ isPresentFunc = elem
 
 isPresentRecPM :: Int -> [Int] -> Bool
 isPresentRecPM _ [] = False
-isPresentRecPM y (x : xs) = y == x || isPresentRecPM y xs
+isPresentRecPM y (x:xs) = y == x || isPresentRecPM y xs
 
 isPresentRecNonPM :: Int -> [Int] -> Bool
 isPresentRecNonPM x xs = not (null xs) && (x == head xs || isPresentRecNonPM x (tail xs))

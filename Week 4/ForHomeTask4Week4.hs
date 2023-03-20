@@ -12,4 +12,4 @@ sumUnevenLC:: Int -> Int -> Int
 sumUnevenLC x y = sum [x | x <- [min x y .. max x y], odd x]
 
 sumUnevenHOF :: Int -> Int -> Int
-sumUnevenHOF x y = sum $ filter (odd) [min x y .. max x y]
+sumUnevenHOF x y = sum $ filter odd [min x y .. max x y]

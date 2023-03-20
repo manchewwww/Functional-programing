@@ -6,11 +6,10 @@ main = do
     print $ sumSpecialPrimes 10 3 == 462
 
 sumSpecialPrimes:: Int -> Int -> Int
-sumSpecialPrimes n d = sum $ take n $ filter (\ n -> isPrime n && isContainDigit n d ) [1 .. ]
+sumSpecialPrimes n d = sum $ take n $ filter (\ x -> isPrime x && isContainDigit x d ) [1 .. ]
 
 isPrime :: Int -> Bool
 isPrime x = x > 1 && null [d | d <- [2 .. x - 1], mod x d == 0]
 
 isContainDigit :: Int -> Int -> Bool
-isContainDigit 0 _ = False
-isContainDigit number digit = mod number 10 == digit || isContainDigit (div number 10) digit
+isContainDigit x d = elem d (map digitToInt $ show x)

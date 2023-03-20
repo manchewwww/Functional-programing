@@ -9,7 +9,7 @@ main = do
     print $ isAscending 12332 == False  
 
 isAscending :: Int -> Bool
-isAscending x = (read (sort (show (x)))) == x
+isAscending x = (sort $ show x) == show x
 
 -- isAscending :: Int -> Bool
 -- isAscending x = x == newFunc x
