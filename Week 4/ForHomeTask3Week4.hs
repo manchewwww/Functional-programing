@@ -12,7 +12,7 @@ main = do
     print $ primesInRangeHOF 420 240 == [241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419]
 
 primesInRangeHOF :: Int -> Int -> [Int] 
-primesInRangeHOF x y = filter (\x -> isPrime x && x > 100) [min x y .. max x y] 
+primesInRangeHOF x y = filter (\x -> isPrime x && x > 100) [min x y .. max x y]
 
 primesInRangeLC :: Int -> Int -> [Int]
 primesInRangeLC x y =  [x | x <- [min x y .. max x y], isPrime x, x > 100]
