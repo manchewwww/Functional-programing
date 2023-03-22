@@ -12,26 +12,6 @@ main = do
   print $ eqSumPowDig 1000 3 == 1301
   print $ eqSumPowDig 1500 3 == 1301
 
-eqSumPowDig :: Int -> Int -> Int
-eqSumPowDig hmax power 
- | hmax <= 1 || power < 0 = error "Invalid input"
- | otherwise = helper hmax 0 
-  where
-    helper 1 result = result
-    helper hmax result 
-     | hmax == specialNum hmax power = helper (hmax - 1) (result + hmax)
-     | otherwise = helper (hmax - 1) result
-
-
-specialNum :: Int -> Int -> Int
-specialNum num pow = helper num 0
- where
-    helper 0 result = result
-    helper num result = helper (div num 10) (result + (mod num 10)^pow)
-
--- Task 2
-main :: IO()
-main = do
   print $ getNthSevenlikeNum 1 == 1
   print $ getNthSevenlikeNum 2 == 7
   print $ getNthSevenlikeNum 3 == 8 
@@ -51,6 +31,25 @@ main = do
   print $ getNthSevenlikeNum 31 -- 2801
   print $ getNthSevenlikeNum 32 -- 16087
 
+-- Task 1
+eqSumPowDig :: Int -> Int -> Int
+eqSumPowDig hmax power 
+ | hmax <= 1 || power < 0 = error "Invalid input"
+ | otherwise = helper hmax 0 
+  where
+    helper 1 result = result
+    helper hmax result 
+     | hmax == specialNum hmax power = helper (hmax - 1) (result + hmax)
+     | otherwise = helper (hmax - 1) result
+
+
+specialNum :: Int -> Int -> Int
+specialNum num pow = helper num 0
+ where
+    helper 0 result = result
+    helper num result = helper (div num 10) (result + (mod num 10)^pow)
+
+-- Task 2
 getNthSevenlikeNum :: Int -> Int
 getNthSevenlikeNum 1 = 1
 getNthSevenlikeNum count
