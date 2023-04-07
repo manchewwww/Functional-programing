@@ -19,6 +19,15 @@ accounts1 = [(1, 1, 12.5),(2, 1, 123.2),(3, 2, 13.0),(4, 2, 50.2),(5, 2, 17.2),(
 type Account = (Int, Int, Double)
 type Person = (Int, String, String)
 
+roundToTwoDigits :: Double -> Double
+roundToTwoDigits = (/100) . fromIntegral . round . (*100)
+
 getAverageBalance :: ([Account],[Person]) -> (Person -> Bool) -> Double
+getAverageBalance (account,people) p = roundToTwoDigits $ sum xs / (fromIntegral $ length xs)
+ where
+    xs = [money | (_, idAcc, money) <- account , per@(idPeop, _, _) <- people, p per, idAcc == idPeop]
+
+averageBalanceOfCities :: ([Account], [Person]) -> [String] -> Double
+averageBalanceOfCities db xs = getAverageBalance db (\ (_, _, city) -> elem city xs)
 
  

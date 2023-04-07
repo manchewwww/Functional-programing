@@ -14,5 +14,8 @@ main = do
     print $ duplicateCount ['a'..'z'] == 0
     print $ duplicateCount (['a'..'z'] ++ ['A'..'Z']) == 26
 
+conuntOccurrences :: String -> [(Char, Int)]
+conuntOccurrences = map (\ ys -> (head ys, length ys)) . group . sort . map toLower
+
 duplicateCount :: String -> Int
-duplicateCount str = length str - (length $ group $ map toLower str) 
+duplicateCount = length . filter ((> 1) . snd) . conuntOccurrences

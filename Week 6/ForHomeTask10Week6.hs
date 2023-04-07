@@ -7,11 +7,12 @@ main = do
     print $ checkNumber 121 == (2,2)
 
 checkNumber :: Int -> (Int, Int)
-checkNumber num =  helper num (length $ show num) (0, 0)
- where
-    helper 0 _ (x, y) = (x, y)
-    helper num length (x, y)
-     | mod (length - 1) 2 == 0 = helper (div num 10) (length - 1) (x + mod num 10, y)
-     | otherwise = helper (div num 10) (length - 1) (x, y + mod num 10)
+checkNumber = foldl (\ (resX, resY) (idX, num) -> if even idX then (resX + num, resY) else (resX, resY + num)) (0, 0) . zip [0 .. ] . map digitToInt . show
+-- checkNumber num =  helper num (length $ show num) (0, 0)
+--  where
+--     helper 0 _ (x, y) = (x, y)
+--     helper num length (x, y)
+--      | mod (length - 1) 2 == 0 = helper (div num 10) (length - 1) (x + mod num 10, y)
+--      | otherwise = helper (div num 10) (length - 1) (x, y + mod num 10)
 
     -- checkNumber num = [if mod (y - 1) 2 == 0 then () | (x, y) <- zip [map digitToInt $ show num] [1 ..]]

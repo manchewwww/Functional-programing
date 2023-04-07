@@ -6,4 +6,4 @@ type Cylinder = (Double, Double)
 roundToTwoDigits :: Double -> Double
 roundToTwoDigits = (/100) . fromIntegral . round . (*100)
 getVolumes :: [Cylinder] -> [Double]
-getVolumes xs = [ roundToTwoDigits(pi * r * r * h) | (r, h) <- xs]
+getVolumes xs = [roundToTwoDigits (pi * r * r * h) | (r, h) <- xs]
