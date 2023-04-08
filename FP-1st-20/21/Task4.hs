@@ -19,7 +19,7 @@ scoreHand cards = helper (sort $ map readNumber cards) 0
  where
   helper [] result = result
   helper (x:xs) result
-   | x == 11 = if result >= 11 then helper xs (result + 1) else helper xs (result + 11) 
+   | x == 11 = if result + 11 * (1 + length xs) > 21 then helper xs (result + 1) else (result + 11 * (1 + length xs) ) 
    | otherwise = helper xs (result + x)
    
 readNumber :: String -> Int
