@@ -22,6 +22,8 @@ perimeter (Cylinder r h) = 4 * r + 2 * h
 
 area :: (Floating a) => Shape a -> a
 area (Circle r) = pi * r^2
-area (Rectangle a b) = a * b
-area (Triangle a b c) = sqrt(sum [a, b, c] / 2.0 * (sum [a, b, c] / 2.0 - a) * (sum [a, b, c] / 2.0 - b) * (sum [a, b, c] / 2.0 - c))
+area (Rectangle x y) = x * y
+area (Triangle x y z) = sqrt $ p * (p - x) * (p - y) * (p - z)
+ where
+    p = (x + y + z) / 2.0
 area (Cylinder r h) = 2 * pi * r * h + 2 * pi * r * r
