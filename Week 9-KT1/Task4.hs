@@ -10,3 +10,13 @@ main = do
     print $ prefixToSuffix [0, 0, 0, 0, 0, 0, 0, 0, 0, 1] == [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     print $ prefixToSuffix [0, 0, 0, 0, 0, 0, 1, 1, 1, 1] == [1, 1, 1, 1, 1, 1, 1, 0, 0, 0]
 
+getSuffixSum [] = []
+getSuffixSum xs = sum xs : getSuffixSum (tail xs)
+
+prefixToSuffix :: (Num a) => [a] -> [a]
+prefixToSuffix [] = []
+prefixToSuffix (x:xs) = getSuffixSum $ x : helper (x:xs)
+ where
+    helper [] = []
+    helper [_] = []
+    helper (x:y:xs) = (y - x) : helper (y:xs)
