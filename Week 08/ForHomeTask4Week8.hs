@@ -9,7 +9,8 @@ data Shape a = Circle a | Rectangle a a | Triangle a a a | Cylinder a a
 
 
 maxArea :: (Ord a, Floating a) => [Shape a] -> Shape a
-maxArea (x:xs) = foldl (\acc b -> if area acc > area b then acc else b) x xs
+maxArea = foldl1 (\acc b -> if area acc > area b then acc else b)
+--FOR ME
 -- maxArea (x:xs) = helper xs x (area x)
 --  where
 --     helper [] maxElement result = maxElement
@@ -20,13 +21,15 @@ maxArea (x:xs) = foldl (\acc b -> if area acc > area b then acc else b) x xs
 
 area :: (Floating a) => Shape a -> a
 area (Circle r) = pi * r^2
-area (Rectangle a b) = a * b
-area (Triangle a b c) = sqrt(sum [a, b, c] / 2.0 * (sum [a, b, c] / 2.0 - a) * (sum [a, b, c] / 2.0 - b) * (sum [a, b, c] / 2.0 - c))
+area (Rectangle x y) = x * y
+area (Triangle x y z) = sqrt $ p * (p - x) * (p - y) * (p - z)
+ where
+    p = (x + y + z) / 2.0
 area (Cylinder r h) = 2 * pi * r * h + 2 * pi * r * r
 
 getAreas :: (Floating a) => [Shape a] -> [a]
-getAreas [] = []
-getAreas xs = (area (head xs)) : (getAreas (tail xs))
+getAreas = map area 
+--FOR ME
 -- getAreas xs = helper xs []
 --  where
 --     helper [] result = reverse result

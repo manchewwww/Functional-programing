@@ -16,8 +16,8 @@ data Shape a = Circle a | Rectangle a a | Triangle a a a | Cylinder a a
 
 perimeter :: (Floating a) => Shape a -> a
 perimeter (Circle r) = 2 * pi * r
-perimeter (Rectangle a b) = 2 * a + 2 * b
-perimeter (Triangle a b c) = a + b + c
+perimeter (Rectangle x y) = 2 * x + 2 * y
+perimeter (Triangle x y z) = x + y + z
 perimeter (Cylinder r h) = 4 * r + 2 * h
 
 area :: (Floating a) => Shape a -> a

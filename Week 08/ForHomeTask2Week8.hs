@@ -20,4 +20,4 @@ childrenList ((_, y, z):xs) = y : z : childrenList xs
 listLeaves :: VectorList -> [Node]
 listLeaves xs = helper (parentsList xs) (childrenList xs)
  where
-    helper parent children = [y | y <- children, elem y parent == False]
+    helper parent = filter (\ y -> notElem y parent)
