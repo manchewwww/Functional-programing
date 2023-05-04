@@ -1,23 +1,22 @@
 import Data.List
 main :: IO()
 main = do
-    print $ listLeaves [(1, 2, 3), (2, 4, 5)] -- == [4, 3, 5]
-    print $ listLeaves [(2, 4, 5), (1, 2, 3)] == [4, 5, 3]
-    print $ listLeaves [(1, 2, 3), (3, 4, 5), (5, 6, 9)] == [2, 4, 6, 9]
+    print $ coldestCapital [(Country "yulgaria" "Sofia" [(City "Varna" 0 16), (City "Plovdiv" 120 14), (City "Sofia" 420 13)]), (Country "Germany" "Berlin" [(City "Munchen" 200 15), (City "Berlin" 150 12), (City "Ulm" 210 15)]), (Country "France" "Paris" [(City "Paris" 180 15), (City "Nice" 0 14), (City "Lyon" 500 13)])] == "Germany"
 
-type Node = Int
-type Vector = (Node, Node, Node)
-type VectorList = [Vector]
+type Name = String
+type Capital = Name
+type AvgYearlyTemperature = Double
+type Elevation = Int
 
-parentsList :: VectorList -> [Node]
-parentsList [] = []
-parentsList ((x, _, _):xs) = x : parentsList xs
+data City = City Name Elevation AvgYearlyTemperature
+data Country = Country Name Capital [City]
 
-childrenList :: VectorList -> [Node]
-childrenList [] = []
-childrenList ((_, y, z):xs) = y : z : childrenList xs
+getColdestTemp :: Country -> AvgYearlyTemperature
+getColdestTemp (Country _ capital cities) = minimum [temp | (City name _ temp) <- cities, name == capital]
 
-listLeaves :: VectorList -> [Node]
-listLeaves xs = helper (parentsList xs) (childrenList xs)
- where
-    helper parent children = [y | y <- children, elem y parent == False]
+
+vectorWithCountry :: [Country] -> [(Name, AvgYearlyTemperature)]
+vectorWithCountry = map (\ country@(Country name _ _) -> (name, getColdestTemp country)) 
+
+coldestCapital :: [Country] -> Name
+coldestCapital = fst . foldl1 (\x y -> if snd x < snd y then x else y) . vectorWithCountry
