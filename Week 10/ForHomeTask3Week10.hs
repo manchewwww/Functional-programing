@@ -18,4 +18,4 @@ getAllDistance :: (Floating a) => [Point a] -> [Vector a]
 getAllDistance xs = [distanceBetweenPoints x y | [x, y] <- subsequences xs]
 
 getClosestDistance :: (Floating a, Ord a) => [Point a] -> Vector a
-getClosestDistance xs = foldl1 (\ x@(distance, _, _) y@(newDistance, _, _) -> if distance < newDistance then x else y) (getAllDistance xs)
+getClosestDistance = foldl1 (\ x@(distance, _, _) y@(newDistance, _, _) -> if distance < newDistance then x else y) . getAllDistance
