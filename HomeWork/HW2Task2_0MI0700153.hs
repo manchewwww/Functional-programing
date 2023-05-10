@@ -1,18 +1,12 @@
 main :: IO()
 main = do
-    print $ getNameLengthColor db ((== 'Y'), (> 106)) == [("Pretty Woman",119),("The Man Who Wasn't There",116),("Logan's run",120),("Empire Strikes Back",111),("Star Trek",132),("Star Trek: Nemesis",116)]
-    print $ getNameLengthColor db ((== 'Y'), (> 237)) == []
-    print $ getNameLengthColor db ((== 'Y'), (> 238)) == []
-    print $ getNameLengthColor db ((== 'N'), (< 133)) == [("Terms of Endearment",132)]
-    print $ getNameLengthColor db ((== 'N'), (< 300)) == [("Terms of Endearment",132)]
+    print $ (getStudios db) [2001] == [("USA Entertainm.","Stephen Spielberg"),("Buzzfeed Entertainm.","Christian Baesler")] 
+    print $ (getStudios db) [2002] == [("Buzzfeed Entertainm.","Christian Baesler")]
+    print $ (getStudios db) [1990] == [("Disney","Merv Griffin"),("Buzzfeed Entertainm.","Christian Baesler")]
+    print $ (getStudios db) [1990, 2001, 1976] == [("Disney","Merv Griffin"),("USA Entertainm.","Stephen Spielberg"),("Buzzfeed Entertainm.","Christian Baesler")]
+    print $ (getStudios db) [1979, 2002] == [("Buzzfeed Entertainm.","Christian Baesler")]
 
-getLongestMins :: [Movie] -> Movie
-getLongestMins = foldl1 (\ x@(_, _, length, _, _) y@(_, _, newLength, _, _) -> if length < newLength then y else x)
-
-getNameLengthColor :: MovieDB -> ((Char -> Bool), (Int -> Bool)) -> [(Title, Length)]
-getNameLengthColor (movies, _, _) (f, g) = [(title, length) | (title, _, length, inColor, _) <- movies, f (inColor) && g (length), length /= (-1), length /= lng]
- where
-    (_, _, lng, _, _) = getLongestMins movies
+getStudios :: MovieDB -> ([Year] -> [(StudioName, Name)])
 
 type Title = String
 type Year = Int
