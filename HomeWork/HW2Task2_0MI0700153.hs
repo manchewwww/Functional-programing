@@ -26,7 +26,7 @@ filmsInOtherYears movies years = [name | (_ , year, _, _, name) <- movies, notEl
 filmInYears :: [Movie] -> Name -> [Year]
 filmInYears movies studioName = nub $ [year | (_ , year, _, _, name) <- movies, name == studioName]
 
-
+ 
 getStudiosWithoutMovies :: MovieDB -> [(StudioName, Name)]
 getStudiosWithoutMovies (movies, studios, movieExecs) = [(name, getProducerName id movieExecs) | (name, id) <- allName, notElem name nameWithFilms]
  where

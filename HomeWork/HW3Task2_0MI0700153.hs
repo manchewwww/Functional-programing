@@ -1,54 +1,52 @@
-import Data.Char (isDigit, isAlpha)
-import Data.List (sort)
-
+import Data.List
+import Data.Char
 main :: IO()
 main = do
-    putStrLn $ simplify "1+2+x"  -- "x+3"
-    putStrLn $ simplify "x+2+x-2"  -- "2x"
-    putStrLn $ simplify "x+2-(x-2)"  -- "4"
-    putStrLn $ simplify "y+2+x-2"  -- "x+y"
-    putStrLn $ simplify "1+2+x+y+x+z+5-x-x-x+y"  -- "-x+2y+z+8"
-    putStrLn $ simplify "1+2-(3-(3-2))-9"  -- "-8"
+    print $ simplify "1+2+x" -- == "x+3"
+    print $ simplify "x+2+x-2" -- == "2x"
+    print $ simplify "x+2-(x-2)" -- == "4"
+    print $ simplify "y+2+x-2" -- == "x+y"
+    print $ simplify "1+2+x+y+x+z+5-x-x-x+y" -- == "-x+2y+z+8"
+    print $ simplify "1+2+x+y+x-(x-x-x)+z+y-10" -- =="3x+2y+z-7"
+    print $ simplify "1+2-(3-(3-2))-10" -- == "-9"
+
 
 simplify :: String -> String
-simplify = formatOutput . processExpression []
+simplify expr = removeBrackets expr []
 
-processExpression :: [(Char, Int)] -> String -> [(Char, Int)]
-processExpression stack [] = stack
-processExpression stack (x:xs)  
-    | isDigit x = processExpression (handleDigit stack (read [x]) (getNum xs)) (skipNum xs)
-    | x == '+' || x == '-' || x == ')' =
-        let (coeff, rest) = splitAtCoefficient xs
-            num = if null coeff then 1 else read coeff
-            stack' = handleCoefficient stack x num
-        in processExpression stack' rest
-    | isAlpha x = processExpression stack (handleVariable stack (x : getVariable xs))
-    where
-        getNum = takeWhile isDigit
-        getVariable = takeWhile isAlpha
-        skipNum = dropWhile isDigit
+removeBrackets :: String -> String -> String
+removeBrackets [] acc = reverse acc
+removeBrackets (x:xs) acc
+  | x == ')' = removeBrackets xs acc
+  | x == '+' && (head xs) == '(' = removeBrackets xs acc
+  | x == ')' = removeBrackets xs acc
+  | x == '+' && (head xs) == '(' = removeBrackets xs (x:acc)
+  | x == '-' && (head xs) == '(' = removeBrackets (adjustSigns $ tail xs) (x:acc)
+  | otherwise = removeBrackets xs (x:acc)
 
-        handleDigit [] num = [(' ', num)]
-        handleDigit ((var, coeff) : rest) num = (var, coeff + num) : rest
+adjustSigns :: String -> String
+adjustSigns [] = []
+adjustSigns (x:xs)
+  | x == '(' = removeBrackets xs []
+  | x == '-' = '+' : adjustSigns xs
+  | x == '+' = '-' : adjustSigns xs
+  | otherwise = x : adjustSigns xs
 
-        splitAtCoefficient :: String -> (String, String)
-        splitAtCoefficient = span isDigit
 
-        handleCoefficient [] '+' num = [('+', num)]
-        handleCoefficient [] '-' num = [('-', num)]
-        handleCoefficient stack@(('+', _) : _) '+' num = ('+', num) : stack
-        handleCoefficient stack@(('-', _) : _) '-' num = ('-', num) : stack
-        handleCoefficient stack '+' num = ('+', num) : stack
-        handleCoefficient stack '-' num = ('-', num) : stack
-
-        handleVariable [] [x] = [(x, 1)]
-        handleVariable ((' ', coeff) : rest) [x] = (x, coeff) : rest
-        handleVariable stack [x] = (x, 1) : stack
-
-formatOutput :: [(Char, Int)] -> String
-formatOutput stack = let sortedStack = sort stack in concatMap formatTerm sortedStack
-
-formatTerm :: (Char, Int) -> String
-formatTerm (' ', num) = show num
-formatTerm (var, 1) = [var]
-formatTerm (var, coeff) = show coeff ++ [var]
+simplify' :: String -> [(Char, Int)] 
+simplify' "" = [] 
+simplify' [x] = [(x, 1)] 
+simplify' (x:y:xs) 
+    | x == '+' || x == '-' = if x == '-' then (y, -1) : simplify' xs else (y, 1) : simplify' xs 
+    | otherwise = (x, 1) : simplify' (y:xs) 
+  
+calculateExpression :: [(Char, Int)] -> [(Char, Int)] 
+calculateExpression [] = [] 
+calculateExpression ((x, y):xs) 
+    | isDigit x = (x, calculateEqualTerms x ((x, y):xs)) : calculateExpression (filter (not . isDigit . fst) xs) 
+    | otherwise = (x, y) : calculateExpression xs 
+  where 
+     calculateEqualTerms _ [] = 0 
+     calculateEqualTerms x' ((x'', c'):xs') 
+        | isDigit x'' = c' + calculateEqualTerms x' xs' 
+        | otherwise = calculateEqualTerms x' xs'
